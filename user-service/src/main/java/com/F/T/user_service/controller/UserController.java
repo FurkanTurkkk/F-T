@@ -22,15 +22,27 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(request));
     }
 
-    /*@PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable String userId,
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") String userId,
                                               @RequestBody RequestForUpdateUser request){
-        return ResponseEntity.ok(userService.updateUser(request));
+        return ResponseEntity.ok(userService.updateUser(userId,request));
     }
 
     @GetMapping("/user-id/{userId}")
     public ResponseEntity<UserDto> findUserByUserId(@PathVariable("userId")String userId){
         return ResponseEntity.ok(userService.findUserById(userId));
-    }*/
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable String userID){
+        userService.deleteUserById(userID);
+        return ResponseEntity.ok("User deleted successfully");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllUser(){
+        userService.deleteAllUser();
+        return ResponseEntity.ok("All user deleted successfully");
+    }
 
 }

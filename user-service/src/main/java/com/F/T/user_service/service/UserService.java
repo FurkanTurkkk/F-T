@@ -5,6 +5,8 @@ import com.F.T.user_service.exception.UserAlreadyExistException;
 import com.F.T.user_service.model.User;
 import com.F.T.user_service.repository.UserRepository;
 import com.F.T.user_service.request.RequestForCreateUser;
+import com.F.T.user_service.request.RequestForUpdateUser;
+import jakarta.ws.rs.NotFoundException;
 import org.example.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +24,51 @@ public class UserService {
     }
 
     public UserDto createUser(RequestForCreateUser request) {
-        return converter.convert(saveUser(request));
-    }
-
-    private User saveUser(RequestForCreateUser request){
-        Optional<User> registeredUser=userRepository.findByEmailAndPhoneNumber(request.getEmail(),
-                request.getPhoneNumber());
-        if(registeredUser.isPresent()){
-            throw new UserAlreadyExistException("User already exist by email : "+ request.getEmail()
-            +" or phone number : "+request.getPhoneNumber());
-        }
-        return userRepository.save(new User(request.getFirstname(),
+        checkUserByEmailAndPhoneNumber(request.getEmail(),request.getPhoneNumber());
+        User user=new User(request.getFirstname(),
                 request.getLastname(),
                 request.getTc(),
                 request.getEmail(),
                 request.getPhoneNumber(),
-                request.getBirthday()));
+                request.getBirthday());
+        userRepository.save(user);
+        return converter.convert(user);
     }
+
+    public UserDto updateUser(String userID,RequestForUpdateUser request) {
+        User user=checkUserById(userID);
+        checkUserByEmailAndPhoneNumber(request.getEmail(),request.getPhoneNumber());
+        user.updateUser(request.getEmail(),request.getPhoneNumber());
+        return converter.convert(userRepository.save(user));
+    }
+
+    public UserDto findUserById(String userID){
+        return converter.convert(checkUserById(userID));
+    }
+
+    public void deleteUserById(String userID) {
+        userRepository.deleteById(userID);
+    }
+
+    public void deleteAllUser() {
+        userRepository.deleteAll();
+    }
+
+    private void checkUserByEmailAndPhoneNumber(String email,String phoneNumber){
+        if(userRepository.findByEmail(email).isPresent()){
+            throw new RuntimeException("Email already exist : "+email);
+        }
+        if(userRepository.findByPhoneNumber(phoneNumber).isPresent()){
+            throw new RuntimeException("Phone number already exist : "+phoneNumber);
+        }
+    }
+
+    private User checkUserById(String userID){
+        Optional<User> registeredUser=userRepository.findById(userID);
+        if(registeredUser.isEmpty()){
+            throw new NotFoundException("User could not found by id : "+userID);
+        }
+        return registeredUser.get();
+    }
+
 }

@@ -8,6 +8,10 @@ public class UserDto {
     private String phoneNumber;
     private int age;
 
+    public UserDto(){
+
+    }
+
     public UserDto(String firstname, String lastname, String tc, String email,String phoneNumber, int age) {
         this.firstname = firstname;
         this.lastname = lastname;

@@ -77,4 +77,20 @@ public class User {
     public int hashCode() {
         return Objects.hash(email, phoneNumber);
     }
+
+    public void updateUser(String email,String phoneNumber){
+        if(email==null){
+            this.email=getEmail();
+            this.phoneNumber=phoneNumber;
+        }
+        if(phoneNumber==null){
+            this.phoneNumber=getPhoneNumber();
+            this.email=email;
+        }
+        if(phoneNumber!=null && email!=null){
+            this.email=email;
+            this.phoneNumber=phoneNumber;
+        }
+
+    }
 }
