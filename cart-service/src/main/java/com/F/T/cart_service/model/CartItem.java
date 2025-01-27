@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Document(collection = "cart-items")
 public class CartItem {
@@ -44,6 +45,18 @@ public class CartItem {
 
     public BigDecimal getPrice(){
         return price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(productId, cartItem.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(productId);
     }
 
     public void calculatePrice(BigDecimal bookPrice){

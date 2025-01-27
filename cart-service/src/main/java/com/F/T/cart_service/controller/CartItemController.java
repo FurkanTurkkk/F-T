@@ -5,6 +5,8 @@ import org.example.CartItemDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
 @RequestMapping("/api/v1/cart-item")
 public class CartItemController {
@@ -22,9 +24,9 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemService.createCartItem(cartId,bookId,quantity));
     }
 
-    @DeleteMapping("cart-item-id/{cartItemId}")
-    public ResponseEntity<String> deleteCartItemById(@PathVariable("cartItemId")String cartItemId){
-        cartItemService.deleteCartItemById(cartItemId);
+    @DeleteMapping("/cart-item-id/{cartItemId}")
+    public ResponseEntity<String> deleteCartItemByCartItemId(@PathVariable("cartItemId")String cartItemId){
+        cartItemService.deleteCartItemByCartItemId(cartItemId);
         return ResponseEntity.ok("Cart Item deleted successfully...");
     }
 }

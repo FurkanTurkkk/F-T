@@ -6,11 +6,11 @@ import org.example.CartItemDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DtoConverter {
+public class CartItemDtoConverter {
 
     private final FeignClientService feignClientService;
 
-    public DtoConverter(FeignClientService feignClientService) {
+    public CartItemDtoConverter(FeignClientService feignClientService) {
         this.feignClientService = feignClientService;
     }
 
@@ -22,4 +22,5 @@ public class DtoConverter {
                 cartItem.getPrice()
         );
     }
+
 }

@@ -68,6 +68,12 @@ public class BookService {
         return converter.convert(book);
     }
 
+    public String findBookIdByBookName(String bookName) {
+        Book book=bookRepository.findByBookName(bookName)
+                .orElseThrow(()->new BookNotFoundException("Book could not found by book name : "+bookName));
+        return book.getId();
+    }
+
     public void deleteBookById(String bookId) {
         Book book=checkBookByBookId(bookId);
         book.getCategoryId()
