@@ -27,7 +27,6 @@ public class Order {
         this.userId=userId;
         this.cartId=cartId;
         this.orderItemList=orderItemList;
-        this.orderItemList=new ArrayList<>();
         this.creationDate=LocalDate.now();
     }
 

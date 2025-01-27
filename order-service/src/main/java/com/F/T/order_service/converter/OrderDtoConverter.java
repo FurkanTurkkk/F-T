@@ -22,7 +22,7 @@ public class OrderDtoConverter {
     public OrderDto convert(Order order){
         List<OrderItemDto> orderItemDtoList=order.getOrderItemList()
                 .stream()
-                .map(orderItem -> converter.convert(orderItem))
+                .map(converter::convert)
                 .toList();
         String userEmail= feignClientService.findUserEmailByUserId(order.getUserId());
         return new OrderDto(

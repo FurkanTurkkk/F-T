@@ -17,11 +17,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDtoConverter converter;
     private final FeignClientService feignClientService;
+    private final OrderItemService orderItemService;
 
-    public OrderService(OrderRepository orderRepository, OrderDtoConverter orderDtoConverter, FeignClientService feignClientService) {
+    public OrderService(OrderRepository orderRepository,
+                        OrderDtoConverter orderDtoConverter,
+                        FeignClientService feignClientService,
+                        OrderItemService orderItemService) {
         this.orderRepository = orderRepository;
         this.converter = orderDtoConverter;
         this.feignClientService = feignClientService;
+        this.orderItemService = orderItemService;
     }
 
     public OrderDto createOrder(String userId, String cartId) {
@@ -32,10 +37,13 @@ public class OrderService {
                     String productId = feignClientService.findBookIdByBookName(cartItemDto.getBookName());
                     OrderItem orderItem=new OrderItem(productId,cartItemDto.getQuantity());
                     orderItem.calculatePrice(cartItemDto.getPrice());
+                    orderItemService.saveOrderItem(orderItem);
                     return orderItem;
                 }).toList();
         Order order=new Order(userId,cartId,orderItemList);
-        return converter.convert(saveOrder(order));
+        order.calculatePrice();
+        orderRepository.save(order);
+        return converter.convert(order);
 
     }
 
