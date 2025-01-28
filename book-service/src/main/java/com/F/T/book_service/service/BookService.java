@@ -117,7 +117,9 @@ public class BookService {
     private void checkForCreateBook(RequestForCreateBook request){
         Optional<Book> registeredBook = bookRepository.findByBookName(request.getBookName());
         if(registeredBook.isPresent()){
-            throw new BookAlreadyExistException("Book already exist by book name : "+request.getBookName());
+            Book existingBook=registeredBook.get();
+            existingBook.increaseStock(request.getStock());
+            throw new BookAlreadyExistException("Book already exist by book name stock upgraded : "+request.getBookName());
         }
     }
 

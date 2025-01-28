@@ -35,14 +35,7 @@ public class CartItemService {
         BigDecimal bookPrice=feignClientService.findBookPriceByBookId(bookId);
         Optional<CartItem> registeredCartItem = cartItemRepository.findByProductId(bookId);
         if(registeredCartItem.isPresent()){
-            CartItem existingCartItem = registeredCartItem.get();
-            existingCartItem.updateQuantity(quantity);
-            existingCartItem.calculatePrice(bookPrice);
-            cart.getCartItemList().removeIf(item->item.getProductId().equals(bookId));
-            feignClientService.checkForStock(bookId,quantity);
-            cart.getCartItemList().add(existingCartItem);
-            cart.calculatePrice();
-            cartManagement.getCartService().saveCart(cart);
+            CartItem existingCartItem = updateCartItem(cart,registeredCartItem.get(),quantity,bookPrice,bookId);
             return converter.convert(cartItemRepository.save(existingCartItem));
         }
         CartItem cartItem=new CartItem(cartId,bookId,quantity);
@@ -65,5 +58,16 @@ public class CartItemService {
 
     public void deleteCartItemByCartId(String cartId){
         cartItemRepository.deleteByCartId(cartId);
+    }
+
+    private CartItem updateCartItem(Cart cart,CartItem registeredCartItem,int quantity,BigDecimal bookPrice,String bookId){
+        registeredCartItem.updateQuantity(quantity);
+        registeredCartItem.calculatePrice(bookPrice);
+        cart.getCartItemList().removeIf(item->item.getProductId().equals(bookId));
+        feignClientService.checkForStock(bookId,quantity);
+        cart.getCartItemList().add(registeredCartItem);
+        cart.calculatePrice();
+        cartManagement.getCartService().saveCart(cart);
+        return registeredCartItem;
     }
 }

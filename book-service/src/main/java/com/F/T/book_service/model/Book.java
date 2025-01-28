@@ -85,4 +85,12 @@ public class Book {
     public int hashCode() {
         return Objects.hashCode(bookName);
     }
+
+    public void increaseStock(Long quantity){
+        this.stock+=quantity;
+    }
+
+    public void decreaseStock(Long quantity){
+        this.stock-=quantity;
+    }
 }

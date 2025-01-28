@@ -3,10 +3,9 @@ package com.F.T.order_service.controller;
 import com.F.T.order_service.service.OrderService;
 import org.example.OrderDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -22,5 +21,10 @@ public class OrderController {
     public ResponseEntity<OrderDto> confirmCart(@PathVariable("userId")String userId,
                                                 @PathVariable("cartId")String cartId){
         return ResponseEntity.ok(orderService.createOrder(userId,cartId));
+    }
+
+    @GetMapping("/user-id/{userId}")
+    public ResponseEntity<List<OrderDto>> findOrderListByUserId(@PathVariable("userId")String userId){
+        return ResponseEntity.ok(orderService.findOrderListByUserId(userId));
     }
 }

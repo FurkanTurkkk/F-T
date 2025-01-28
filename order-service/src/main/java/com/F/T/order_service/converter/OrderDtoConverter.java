@@ -28,7 +28,8 @@ public class OrderDtoConverter {
         return new OrderDto(
                 order.getPrice(),
                 orderItemDtoList,
-                userEmail
+                userEmail,
+                order.getCreationDate()
         );
     }
 }

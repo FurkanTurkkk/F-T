@@ -13,6 +13,7 @@
         <module name="user-service" />
         <module name="order-service" />
         <module name="eureka-server" />
+        <module name="notification-service" />
         <module name="shared-dto-ft" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
       <module name="cart-service" options="-parameters" />
       <module name="category-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
